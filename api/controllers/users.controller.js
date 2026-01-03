@@ -1,21 +1,16 @@
 //Import
 const usersModel = require("../models/nosql/users.model");
+const { handleHTTPResponse, handleHTTPError, INTERNAL_SERVER_ERROR } = require("../utils/handleResponse.util");
 
 //GET ALL
 const getUsers = async (req, res) => {
     try {
         const data = await usersModel.find();
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Users retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Advanced couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -24,17 +19,11 @@ const getUsersByName = async (req, res) => {
     try {
         const username = req.params.username;
         const data = await usersModel.findById(username);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Users retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Advanced couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -43,17 +32,11 @@ const createUser = async (req, res) => {
     try {
         const body = req.body;
         const data = await usersModel.create(body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Users created successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Advanced couldn't be created", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -63,17 +46,11 @@ const updateUser = async (req, res) => {
         const username = req.params.username;
         const body = req.body;
         const data = await usersModel.findByIdAndUpdate(username, body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Users updated successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Advanced couldn't be updated", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -85,10 +62,7 @@ const deleteUser = async (req, res) => {
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Advanced couldn't be deleted", INTERNAL_SERVER_ERROR);
     }
 };
 

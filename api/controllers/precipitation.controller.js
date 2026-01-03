@@ -1,21 +1,16 @@
 //Import
 const precipitationModel = require("../models/nosql/precipitation.model");
+const { handleHTTPResponse, handleHTTPError, INTERNAL_SERVER_ERROR } = require("../utils/handleResponse.util");
 
 //GET ALL
 const getPrecipitation = async (req, res) => {
     try {
         const data = await precipitationModel.find();
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Precipitation retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Precipitation couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -24,17 +19,11 @@ const getPrecipitationById = async (req, res) => {
     try {
         const id = req.params.id;
         const data = await precipitationModel.findById(id);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Precipitation retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Precipitation couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -43,17 +32,11 @@ const createPrecipitation = async (req, res) => {
     try {
         const body = req.body;
         const data = await precipitationModel.create(body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Precipitation created successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Precipitation couldn't be created", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -63,17 +46,11 @@ const updatePrecipitation = async (req, res) => {
         const id = req.params.id;
         const body = req.body;
         const data = await precipitationModel.findByIdAndUpdate(id, body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Precipitation updated successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Precipitation couldn't be updated", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -85,10 +62,7 @@ const deletePrecipitation = async (req, res) => {
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Precipitation couldn't be deleted", INTERNAL_SERVER_ERROR);
     }
 };
 

@@ -1,21 +1,16 @@
 //Import
 const windModel = require("../models/nosql/wind.model");
+const { handleHTTPResponse, handleHTTPError, INTERNAL_SERVER_ERROR } = require("../utils/handleResponse.util");
 
 //GET ALL
 const getWind = async (req, res) => {
     try {
         const data = await windModel.find();
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Wind retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Wind couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -24,17 +19,11 @@ const getWindById = async (req, res) => {
     try {
         const id = req.params.id;
         const data = await windModel.findById(id);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Wind retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Wind couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -43,17 +32,11 @@ const createWind = async (req, res) => {
     try {
         const body = req.body;
         const data = await windModel.create(body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Wind created successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Wind couldn't be created", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -63,17 +46,11 @@ const updateWind = async (req, res) => {
         const id = req.params.id;
         const body = req.body;
         const data = await windModel.findByIdAndUpdate(id, body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Wind updated successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Wind couldn't be updated", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -85,10 +62,7 @@ const deleteWind = async (req, res) => {
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Wind couldn't be deleted", INTERNAL_SERVER_ERROR);
     }
 };
 

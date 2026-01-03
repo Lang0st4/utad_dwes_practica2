@@ -1,21 +1,16 @@
 //Import
 const probesModel = require("../models/nosql/probes.model");
+const { handleHTTPResponse, handleHTTPError, INTERNAL_SERVER_ERROR } = require("../utils/handleResponse.util");
 
 //GET ALL
 const getProbes = async (req, res) => {
     try {
         const data = await probesModel.find();
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Probes retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Probes couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -24,17 +19,11 @@ const getProbesByName = async (req, res) => {
     try {
         const name = req.params.name;
         const data = await probesModel.findById(name);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Probes retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Probes couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -43,17 +32,11 @@ const createProbe = async (req, res) => {
     try {
         const body = req.body;
         const data = await probesModel.create(body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Probes created successfully", data);
     }   
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Probes couldn't be created", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -63,17 +46,11 @@ const updateProbe = async (req, res) => {
         const name = req.params.name;
         const body = req.body;
         const data = probesModel.findByIdAndUpdate(name, body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Probes updated successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Probes couldn't be updated", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -82,17 +59,11 @@ const deleteProbe = async (req, res) => {
     try {
         const name = req.params.name;
         const data = await probesModel.deleteOne({_id: name});
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Probes deleted successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Probes couldn't be deleted", INTERNAL_SERVER_ERROR);
     }
 }
 

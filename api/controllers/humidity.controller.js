@@ -1,21 +1,16 @@
 //Import
 const humidityModel = require("../models/nosql/humidity.model");
+const { handleHTTPResponse, handleHTTPError, INTERNAL_SERVER_ERROR } = require("../utils/handleResponse.util");
 
 //GET ALL
 const getHumidity = async (req, res) => {
     try {
         const data = await humidityModel.find()
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Humidity retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Humidity couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -24,17 +19,11 @@ const getHumidityById = async (req, res) => {
     try {
         const id = req.params.id;
         const data = await humidityModel.findById(id);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Humidity retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Humidity couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -43,17 +32,11 @@ const createHumidity = async (req, res) => {
     try {
         const body = req.body;
         const data = await humidityModel.create(body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Humidity created successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Humidity couldn't be created", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -63,17 +46,11 @@ const updateHumidity = async (req, res) => {
         const id = req.params.id;
         const body = req.body;
         const data = await humidityModel.findByIdAndUpdate(id, body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Humidity updated successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Humidity couldn't be updated", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -85,10 +62,7 @@ const deleteHumidity = async (req, res) => {
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Humidity couldn't be deleted", INTERNAL_SERVER_ERROR);
     }
 };
 

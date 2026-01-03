@@ -1,21 +1,16 @@
 //Import
 const infoModel = require("../models/nosql/info.model");
+const { handleHTTPResponse, handleHTTPError, INTERNAL_SERVER_ERROR } = require("../utils/handleResponse.util");
 
 //GET ALL
 const getInfo = async (req, res) => {
     try {
         const data = await infoModel.find()
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Info retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Info couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -24,17 +19,11 @@ const getInfoById = async (req, res) => {
     try {
         const id = req.params.id;
         const data = await infoModel.findById(id);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Advanced retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Info couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -43,17 +32,11 @@ const createInfo = async (req, res) => {
     try {
         const body = req.body;
         const data = await infoModel.create(body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Advanced created successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Info couldn't be created", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -63,17 +46,11 @@ const updateInfo = async (req, res) => {
         const id = req.params.id;
         const body = req.body;
         const data = await infoModel.findByIdAndUpdate(id, body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Advanced updated successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Info couldn't be updated", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -85,10 +62,7 @@ const deleteInfo = async (req, res) => {
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Info couldn't be deleted", INTERNAL_SERVER_ERROR);
     }
 };
 

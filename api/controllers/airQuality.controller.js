@@ -1,21 +1,16 @@
 //Import
 const airQualityModel = require("../models/nosql/airQuality.model");
+const { handleHTTPResponse, handleHTTPError, INTERNAL_SERVER_ERROR } = require("../utils/handleResponse.util");
 
 //GET ALL
 const getAirQuality = async (req, res) => {
     try {
         const data = await airQualityModel.find()
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Air retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Air couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -24,17 +19,11 @@ const getAirQualityById = async (req, res) => {
     try {
         const id = req.params.id;
         const data = await airQualityModel.findById(id);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Air retrieved successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Air couldn't be retrieved", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -43,17 +32,11 @@ const createAirQuality = async (req, res) => {
     try {
         const body = req.body;
         const data = await airQualityModel.create(body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Air created successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Air couldn't be created", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -63,17 +46,11 @@ const updateAirQuality = async (req, res) => {
         const id = req.params.id;
         const body = req.body;
         const data = await airQualityModel.findByIdAndUpdate(id, body);
-        res.send({
-            error: false,
-            data
-        });
+        handleHTTPResponse(res, "Air updated successfully", data);
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Air couldn't be updated", INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -85,10 +62,7 @@ const deleteAirQuality = async (req, res) => {
     }
     catch(err) {
         console.log(`Error: ${err}`);
-        res.status(500).send({
-            error: true,
-            message: "INTERNAL SERVER ERROR"
-        });
+        handleHTTPError(res, "Air couldn't be deleted", INTERNAL_SERVER_ERROR);
     }
 };
 
