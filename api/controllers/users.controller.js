@@ -25,13 +25,13 @@ const getUsersByName = async (req, res) => {
         const user = await usersModel.findOne({ email: req.email }).select("password username role email");
 
         if(!user) {
-            handleHTTPError(res, "User does not exists", NOT_FOUND);
+            handleHTTPError(res, "Invalid credentials", NOT_FOUND);
             return;
         }
 
         const check = await comparePassword(req.password, user.password);
         if(!check) {
-            handleHTTPError(res, "Invalid password", UNAUTHORIZED);
+            handleHTTPError(res, "Invalid credentials", UNAUTHORIZED);
             return;
         }
 
