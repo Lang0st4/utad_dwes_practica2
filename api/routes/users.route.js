@@ -16,10 +16,10 @@ const router = express.Router();
 router.get("/", authMiddleware, getUsers);
 
 //GET by ID (Login)
-router.get("/:name", authMiddleware, validatorLogin, getUsersByName);
+router.get("/:name", validatorLogin, getUsersByName);
 
 //CREATE (Register)
-router.post("/", authMiddleware, validatorRegister, createUser);
+router.post("/", validatorRegister, createUser);
 
 //UPDATE
 router.put("/:name", authMiddleware, updateUser);

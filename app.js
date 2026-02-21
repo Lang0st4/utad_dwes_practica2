@@ -1,6 +1,8 @@
 // Imports
 const express = require("express");
 const cors = require("cors");
+const swaggerUI = require("swagger-ui-express");
+const swaggerSpecs = require("./api/docs/swagger.docs");
 require("dotenv").config();
 
 // MongoDB Connection
@@ -9,6 +11,11 @@ const PORT = process.env.PORT || 3000;
 
 // Web Server Setup
 const app = express();
+app.use(
+  "/api-docs",
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerSpecs)
+);
 app.use(cors());
 app.use(express.json());
 
